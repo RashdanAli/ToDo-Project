@@ -79,4 +79,20 @@ router.delete('/:id', async (req, res, next) => {
     }
 });
 
+// @route   PATCH /api/todos/:id/done
+// @desc    Toggle done status
+router.patch('/:id/done', async (req, res, next) => {
+    try {
+        const todo = await Todo.findById(req.params.id);
+        if (!todo) {
+            return res.status(404).json({ message: 'Todo not found' });
+        }
+        todo.done = !todo.done;
+        const updatedTodo = await todo.save();
+        res.json(updatedTodo);
+    } catch (error) {
+        next(error);
+    }
+});
+
 module.exports = router;

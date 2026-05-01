@@ -2,14 +2,14 @@
 
 # ✅ Taska
 
-### A full-stack task management app — clean, fast, and persistence-first. (TODO List)
+### A full-stack task management app — clean, fast, and persistence-first.
 
 <br/>
 
 <!-- Tech Stack Badges -->
 ![React](https://img.shields.io/badge/React-18-61DAFB?style=for-the-badge&logo=react&logoColor=white&labelColor=20232A)
 ![Vite](https://img.shields.io/badge/Vite-Build_Tool-646CFF?style=for-the-badge&logo=vite&logoColor=white&labelColor=1a1a2e)
-![TypeScript](https://img.shields.io/badge/TypeScript-Config-3178C6?style=for-the-badge&logo=typescript&logoColor=white&labelColor=1a1a2e)
+![JavaScript](https://img.shields.io/badge/JavaScript-ES2022-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black&labelColor=1a1a2e)
 ![Node.js](https://img.shields.io/badge/Node.js-20+-5FA04E?style=for-the-badge&logo=node.js&logoColor=white&labelColor=1a1a2e)
 ![Express](https://img.shields.io/badge/Express.js-Backend-000000?style=for-the-badge&logo=express&logoColor=white&labelColor=1a1a2e)
 ![MongoDB](https://img.shields.io/badge/MongoDB-Atlas-47A248?style=for-the-badge&logo=mongodb&logoColor=white&labelColor=1a1a2e)
@@ -28,6 +28,7 @@
 | 🗄️ **Database** | MongoDB Atlas + Mongoose | Persistent data storage, schema validation |
 | 🔗 **HTTP Client** | Axios | Frontend → Backend API communication |
 | 📦 **Monorepo** | npm Workspaces | Single root managing both `Backend/` and `FrontEnd/client/` |
+| 🌐 **Language** | JavaScript (ES2022) | No compilation overhead; plain `.jsx` files throughout |
 | 🎨 **Styling** | CSS Modules + react-hot-toast | Scoped styles, toast notifications |
 
 ---
@@ -73,10 +74,7 @@ taska/
 │       │   ├── App.jsx           ← Root component — wires useTodos to all children
 │       │   └── main.jsx          ← React DOM entry point
 │       ├── 📄 index.html         ← Vite HTML entry shell
-│       ├── ⚙️  vite.config.ts    ← Vite config — includes /api proxy to localhost:5000
-│       ├── tsconfig.json         ← TypeScript base config
-│       ├── tsconfig.app.json     ← App-specific TS config
-│       ├── tsconfig.node.json    ← Node-environment TS config (for Vite config file)
+│       ├── ⚙️  vite.config.js    ← Vite config — includes /api proxy to localhost:5000
 │       ├── eslint.config.js      ← ESLint rules
 │       ├── package.json          ← Frontend dependencies & scripts
 │       └── 📄 README.md          ← Frontend setup guide (Vite proxy, assumptions, run instructions)
@@ -308,7 +306,7 @@ This lets you install all dependencies from the repo root with a single `npm ins
 
 | Decision | Rationale |
 |---|---|
-| **Vite over CRA** | Significantly faster HMR and build times; first-class TypeScript support |
+| **Vite over CRA** | Significantly faster HMR and build times; works great with plain JavaScript + JSX |
 | **Centralized API layer** (`api/todos.js`) | All HTTP logic in one file — easy to swap base URLs, easy to explain in a code walkthrough |
 | **`useTodos` custom hook** | Keeps components pure and presentation-focused; all async logic is testable in isolation |
 | **Optimistic updates** | UI feels instant even on slow connections; rollback on failure keeps data consistent |
@@ -340,7 +338,7 @@ This lets you install all dependencies from the repo root with a single `npm ins
 | `Backend/src/db.js` | `connectDB()` — fails fast if MongoDB is unreachable |
 | `Backend/src/models/Todo.js` | Mongoose schema with validation rules |
 | `Backend/src/routes/todos.js` | All 5 CRUD route handlers |
-| `FrontEnd/client/vite.config.ts` | Vite proxy — forwards `/api/*` to `localhost:5000` in dev |
+| `FrontEnd/client/vite.config.js` | Vite proxy — forwards `/api/*` to `localhost:5000` in dev |
 | `FrontEnd/client/src/api/todos.js` | Axios service layer — one function per API operation |
 | `FrontEnd/client/src/hooks/useTodos.js` | Custom hook — all state, fetching, and optimistic mutations |
 | `FrontEnd/client/src/App.jsx` | Root component — layout, loading state, error banner |

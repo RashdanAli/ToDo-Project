@@ -1,0 +1,796 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+/* ─── Design Tokens ─── */
+:root {
+    --green: #2E8B57;
+    --green-dark: #226644;
+    --green-light: #3aad6e;
+    --green-faint: #e8f5ee;
+    --green-glow: rgba(46, 139, 87, 0.22);
+
+    --white: #ffffff;
+
+    /* All text is dark / black for readability over the background image */
+    --text-primary: #0a0a0a;
+    --text-secondary: #1a1a1a;
+    --text-muted: #444444;
+
+    --border: rgba(46, 139, 87, 0.18);
+    --border-focus: rgba(46, 139, 87, 0.55);
+
+    --danger: #c53030;
+    --danger-light: #fff5f5;
+
+    --shadow-sm: 0 1px 4px rgba(0, 0, 0, 0.10);
+    --shadow-md: 0 4px 18px rgba(0, 0, 0, 0.14), 0 2px 6px rgba(0, 0, 0, 0.08);
+    --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.18), 0 4px 12px rgba(0, 0, 0, 0.10);
+    --shadow-glow: 0 0 0 3px rgba(46, 139, 87, 0.22);
+
+    --radius-sm: 6px;
+    --radius-md: 12px;
+    --radius-lg: 18px;
+    --radius-xl: 24px;
+    --radius-full: 9999px;
+
+    --transition: 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-bounce: 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* ─── Reset ─── */
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+/* ─── Body — full-cover background image ─── */
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    color: var(--text-primary);
+    min-height: 100vh;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+
+    /* Background image: cover, centred, fixed so it stays put while scrolling */
+    background-image: url('/src/assets/Taska background.png');
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+/* ─── App Shell — very light overlay so cards pop ─── */
+.app-shell {
+    min-height: 100vh;
+    /* Subtle dark veil over the image keeps text legible everywhere */
+    background: rgba(255, 255, 255, 0.08);
+}
+
+/* ─── Sticky Header ─── */
+.app-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    padding: 0 24px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.82);
+    backdrop-filter: blur(18px) saturate(180%);
+    -webkit-backdrop-filter: blur(18px) saturate(180%);
+    border-bottom: 1px solid rgba(46, 139, 87, 0.15);
+    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.08);
+}
+
+.header-inner {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.header-logo {
+    width: 34px;
+    height: 34px;
+    background: var(--green);
+    border-radius: 10px;
+    display: grid;
+    place-items: center;
+    box-shadow: 0 2px 8px rgba(46, 139, 87, 0.35);
+    flex-shrink: 0;
+}
+
+.header-logo svg {
+    width: 18px;
+    height: 18px;
+    stroke: white;
+    fill: none;
+    stroke-width: 2.2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.header-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #000000;
+    letter-spacing: -0.3px;
+}
+
+.header-title span {
+    color: var(--green);
+}
+
+/* ─── Main layout ─── */
+.app-main {
+    max-width: 660px;
+    margin: 0 auto;
+    padding: 32px 16px 80px;
+}
+
+/* ─── Error Banner ─── */
+.error-banner {
+    background: rgba(255, 245, 245, 0.95);
+    border: 1px solid #f5c6c6;
+    border-radius: var(--radius-md);
+    padding: 12px 16px;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    animation: slideDown 0.25s ease;
+    font-size: 14px;
+    color: #7f1d1d;
+    font-weight: 500;
+}
+
+.error-banner button {
+    background: none;
+    border: 1px solid #f5c6c6;
+    color: #7f1d1d;
+    padding: 3px 10px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    font-size: 12px;
+    font-family: inherit;
+    transition: background var(--transition);
+    white-space: nowrap;
+}
+
+.error-banner button:hover {
+    background: #ffe4e4;
+}
+
+/* ─── Glass Card ─── */
+.glass-card {
+    position: relative;
+    overflow: hidden;
+    /* Opaque white background so form is always fully readable */
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(46, 139, 87, 0.18);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-md);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    padding: 28px;
+    margin-bottom: 16px;
+}
+
+/* Liquid-glass sheen — purely decorative */
+.glass-card::after {
+    content: '';
+    position: absolute;
+    top: -60%;
+    left: -40%;
+    width: 80%;
+    height: 120%;
+    background: radial-gradient(ellipse, rgba(46, 139, 87, 0.06) 0%, transparent 70%);
+    pointer-events: none;
+    animation: liquidShift 8s ease-in-out infinite alternate;
+}
+
+/* ─── Todo Form ─── */
+.todo-form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.form-field {
+    position: relative;
+}
+
+.form-field input[type="text"],
+.form-field textarea {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-md);
+    font-family: inherit;
+    font-size: 15px;
+    /* Black text inside inputs */
+    color: #000000;
+    background: #ffffff;
+    transition: border-color var(--transition), box-shadow var(--transition);
+    resize: none;
+    outline: none;
+}
+
+.form-field input[type="text"]::placeholder,
+.form-field textarea::placeholder {
+    color: #888888;
+}
+
+.form-field input[type="text"]:focus,
+.form-field textarea:focus {
+    border-color: var(--green);
+    box-shadow: var(--shadow-glow);
+}
+
+.char-count {
+    position: absolute;
+    right: 12px;
+    bottom: 10px;
+    font-size: 11px;
+    color: #888888;
+    pointer-events: none;
+    transition: color var(--transition);
+}
+
+.char-count.warn {
+    color: #d97706;
+}
+
+.char-count.over {
+    color: var(--danger);
+}
+
+.validation-msg {
+    font-size: 12px;
+    color: var(--danger);
+    font-weight: 500;
+    padding: 2px 4px;
+    animation: fadeIn 0.2s ease;
+}
+
+.form-actions {
+    display: flex;
+    gap: 8px;
+}
+
+/* ─── Buttons ─── */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 11px 20px;
+    border-radius: var(--radius-md);
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    transition: all var(--transition-bounce);
+    white-space: nowrap;
+    letter-spacing: 0.01em;
+}
+
+.btn:active {
+    transform: scale(0.96);
+}
+
+.btn-primary {
+    background: var(--green);
+    color: #ffffff;
+    box-shadow: 0 2px 10px rgba(46, 139, 87, 0.30);
+    flex: 1;
+}
+
+.btn-primary:hover:not(:disabled) {
+    background: var(--green-dark);
+    box-shadow: 0 4px 18px rgba(46, 139, 87, 0.40);
+    transform: translateY(-1px);
+}
+
+.btn-primary:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+/* ─── Filter Bar ─── */
+.filter-bar {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px;
+    background: rgba(255, 255, 255, 0.88);
+    border: 1px solid rgba(46, 139, 87, 0.18);
+    border-radius: var(--radius-full);
+    margin-bottom: 16px;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    box-shadow: var(--shadow-sm);
+}
+
+.filter-btn {
+    flex: 1;
+    padding: 8px 14px;
+    border: none;
+    background: transparent;
+    border-radius: var(--radius-full);
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 500;
+    /* Dark text on filter bar */
+    color: #333333;
+    cursor: pointer;
+    transition: all var(--transition);
+}
+
+.filter-btn:hover {
+    color: var(--green);
+}
+
+.filter-btn.active {
+    background: white;
+    color: var(--green);
+    font-weight: 700;
+    box-shadow: var(--shadow-sm);
+}
+
+.filter-count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 5px;
+    background: var(--green);
+    color: #ffffff;
+    border-radius: var(--radius-full);
+    font-size: 10px;
+    font-weight: 700;
+    margin-left: 5px;
+    line-height: 1;
+}
+
+/* ─── Todo List ─── */
+.todo-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* ─── Empty State ─── */
+.empty-state {
+    text-align: center;
+    padding: 48px 24px;
+    background: rgba(255, 255, 255, 0.90);
+    border-radius: var(--radius-xl);
+    border: 1px solid var(--border);
+    backdrop-filter: blur(12px);
+    animation: fadeIn 0.4s ease;
+}
+
+.empty-state-icon {
+    font-size: 48px;
+    margin-bottom: 16px;
+}
+
+.empty-state p {
+    font-size: 15px;
+    font-weight: 600;
+    color: #111111;
+    margin-bottom: 6px;
+}
+
+.empty-state small {
+    font-size: 13px;
+    color: #555555;
+}
+
+/* ─── Loading Spinner ─── */
+.loading-state {
+    text-align: center;
+    padding: 48px 24px;
+    background: rgba(255, 255, 255, 0.90);
+    border-radius: var(--radius-xl);
+    border: 1px solid var(--border);
+    backdrop-filter: blur(12px);
+}
+
+.loading-state p {
+    color: #333333;
+    font-weight: 500;
+    font-size: 14px;
+}
+
+.spinner {
+    width: 36px;
+    height: 36px;
+    border: 3px solid rgba(46, 139, 87, 0.20);
+    border-top-color: var(--green);
+    border-radius: 50%;
+    margin: 0 auto 16px;
+    animation: spin 0.7s linear infinite;
+}
+
+/* ─── Todo Item ─── */
+.todo-item {
+    background: rgba(255, 255, 255, 0.96);
+    border: 1.5px solid rgba(46, 139, 87, 0.15);
+    border-radius: var(--radius-lg);
+    padding: 16px 18px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 14px;
+    box-shadow: var(--shadow-sm);
+    transition: all var(--transition);
+    animation: slideIn 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+}
+
+.todo-item:hover {
+    box-shadow: var(--shadow-md);
+    border-color: rgba(46, 139, 87, 0.30);
+    transform: translateY(-2px);
+}
+
+.todo-item.done {
+    background: rgba(240, 250, 245, 0.92);
+    border-color: rgba(46, 139, 87, 0.12);
+}
+
+.todo-item.editing {
+    border-color: var(--green);
+    box-shadow: var(--shadow-glow), var(--shadow-md);
+    transform: none;
+}
+
+.todo-item.removing {
+    opacity: 0;
+    transform: translateX(12px) scale(0.97);
+    transition: all 0.2s ease;
+    pointer-events: none;
+}
+
+/* ─── Custom Checkbox ─── */
+.todo-checkbox-wrap {
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+.todo-checkbox {
+    position: relative;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    display: block;
+}
+
+.todo-checkbox input[type="checkbox"] {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.todo-checkbox-box {
+    width: 20px;
+    height: 20px;
+    border: 2px solid rgba(46, 139, 87, 0.35);
+    border-radius: 6px;
+    background: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all var(--transition-bounce);
+}
+
+.todo-checkbox:hover .todo-checkbox-box {
+    border-color: var(--green);
+    background: var(--green-faint);
+}
+
+.todo-checkbox input:checked~.todo-checkbox-box {
+    background: var(--green);
+    border-color: var(--green);
+    animation: checkPop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.todo-checkbox-box svg {
+    width: 12px;
+    height: 12px;
+    stroke: white;
+    fill: none;
+    stroke-width: 2.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    opacity: 0;
+    transform: scale(0.5);
+    transition: all var(--transition-bounce);
+}
+
+.todo-checkbox input:checked~.todo-checkbox-box svg {
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* ─── Todo Text — always black ─── */
+.todo-body {
+    flex: 1;
+    min-width: 0;
+}
+
+.todo-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: #000000;
+    margin-bottom: 3px;
+    transition: all var(--transition);
+    word-break: break-word;
+}
+
+.todo-item.done .todo-title {
+    text-decoration: line-through;
+    color: #666666;
+    font-weight: 400;
+}
+
+.todo-desc {
+    font-size: 13px;
+    color: #333333;
+    word-break: break-word;
+    font-weight: 400;
+}
+
+.todo-item.done .todo-desc {
+    color: #888888;
+}
+
+/* ─── Inline edit ─── */
+.edit-fields {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex: 1;
+}
+
+.edit-fields input[type="text"],
+.edit-fields textarea {
+    width: 100%;
+    padding: 9px 13px;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-family: inherit;
+    font-size: 14px;
+    color: #000000;
+    background: #ffffff;
+    outline: none;
+    resize: none;
+    transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+.edit-fields input:focus,
+.edit-fields textarea:focus {
+    border-color: var(--green);
+    box-shadow: var(--shadow-glow);
+}
+
+.edit-actions {
+    display: flex;
+    gap: 6px;
+    margin-top: 4px;
+    align-items: center;
+}
+
+/* ─── Item Actions ─── */
+.todo-actions {
+    display: flex;
+    gap: 6px;
+    flex-shrink: 0;
+    opacity: 0;
+    transition: opacity var(--transition);
+}
+
+.todo-item:hover .todo-actions,
+.todo-item.editing .todo-actions {
+    opacity: 1;
+}
+
+/* ─── Action Buttons ─── */
+.btn-icon {
+    padding: 7px 12px;
+    font-size: 13px;
+    font-weight: 500;
+    background: rgba(255, 255, 255, 0.9);
+    color: #333333;
+    border: 1.5px solid rgba(46, 139, 87, 0.20);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: all var(--transition);
+    font-family: inherit;
+}
+
+.btn-icon:hover {
+    background: var(--green-faint);
+    border-color: var(--green);
+    color: var(--green-dark);
+}
+
+.btn-danger {
+    background: rgba(255, 255, 255, 0.9);
+    color: var(--danger);
+    border: 1.5px solid rgba(197, 48, 48, 0.20);
+    border-radius: var(--radius-sm);
+    padding: 7px 12px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all var(--transition);
+}
+
+.btn-danger:hover {
+    background: var(--danger-light);
+    border-color: var(--danger);
+}
+
+.btn-save {
+    background: var(--green);
+    color: #ffffff;
+    border: none;
+    border-radius: var(--radius-sm);
+    padding: 7px 14px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all var(--transition);
+    box-shadow: 0 2px 8px rgba(46, 139, 87, 0.25);
+}
+
+.btn-save:hover:not(:disabled) {
+    background: var(--green-dark);
+}
+
+.btn-save:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
+.btn-cancel-inline {
+    background: transparent;
+    color: #555555;
+    border: 1.5px solid #cccccc;
+    border-radius: var(--radius-sm);
+    padding: 7px 12px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all var(--transition);
+}
+
+.btn-cancel-inline:hover {
+    color: #222222;
+    border-color: #999999;
+}
+
+/* ─── Stats Footer ─── */
+.app-stats {
+    text-align: center;
+    margin-top: 28px;
+    color: #222222;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.app-stats span {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 16px;
+    background: rgba(255, 255, 255, 0.90);
+    border: 1px solid rgba(46, 139, 87, 0.18);
+    border-radius: var(--radius-full);
+    backdrop-filter: blur(8px);
+    box-shadow: var(--shadow-sm);
+}
+
+/* ─── Animations ─── */
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px) scale(0.98);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes checkPop {
+    0% {
+        transform: scale(0.8);
+    }
+
+    60% {
+        transform: scale(1.15);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes liquidShift {
+    from {
+        transform: translate(-10%, -5%) rotate(-5deg);
+    }
+
+    to {
+        transform: translate(10%, 5%) rotate(5deg);
+    }
+}
+
+/* ─── Responsive ─── */
+@media (max-width: 520px) {
+    .app-main {
+        padding: 20px 12px 60px;
+    }
+
+    .glass-card {
+        padding: 20px;
+    }
+
+    .todo-actions {
+        opacity: 1;
+    }
+
+    .filter-btn {
+        font-size: 12px;
+        padding: 7px 10px;
+    }
+}

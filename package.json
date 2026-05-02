@@ -1,0 +1,17 @@
+{
+    "name": "taska",
+    "private": true,
+    "workspaces": [
+        "FrontEnd/client",
+        "Backend"
+    ],
+    "scripts": {
+        "dev:client": "npm run dev --workspace=FrontEnd/client",
+        "dev:server": "npm run dev --workspace=Backend",
+        "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\""
+    },
+    "devDependencies": {
+        "concurrently": "^9.2.1",
+        "kill-port-process": "^4.0.2"
+    }
+}
